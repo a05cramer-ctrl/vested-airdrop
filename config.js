@@ -1,1 +1,1 @@
-window.VESTED_CFG={NAME:"VESTED",TICKER:"VESTED",CA:"",CHAIN:"solana",PAD:"pumpfun",X:"",BUY:"",CHART:"",ENGINE:""};
+window.VESTED_CFG={NAME:"VESTED",TICKER:"VESTED",CA:"28h1AJneGvFZAXCg1YPKedbKrtAapKUSBuXc7fmKpump",CHAIN:"solana",PAD:"pumpfun",X:"https://x.com/vestedairdrop",BUY:"https://pump.fun/coin/28h1AJneGvFZAXCg1YPKedbKrtAapKUSBuXc7fmKpump",CHART:"https://gmgn.ai/sol/token/28h1AJneGvFZAXCg1YPKedbKrtAapKUSBuXc7fmKpump",ENGINE:""};
