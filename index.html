@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VESTED</title>
+<meta name="description" content="$VESTED: the airdrop pump.fun never sent. Every hour, creator fees go out in SOL to holders, weighted by what they've paid pump.fun.">
+<meta property="og:title" content="VESTED ($VESTED)">
+<meta property="og:description" content="The airdrop pump.fun never sent. Hourly SOL drops to holders, weighted by the fees you've paid pump.fun.">
+<meta property="og:image" content="og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="og.jpg">
+<meta name="theme-color" content="#0B0F0C">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0F0C;--bg2:#0E1511;--panel:#111A14;--line:#1F3027;--line2:#2C4436;
+  --mint:#86EFAC;--neon:#00FF88;--deep:#0A7A43;--ink:#E9FFF1;--mute:#8FA89A;--dim:#5E7568;
+  --cloud:#4A6656;--paper:#E9FFF1;--paperInk:#0B0F0C;
+  --px:'Jersey 10',ui-monospace,monospace;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B0F0C}}
+:root[data-theme="dark"]{--bg:#0B0F0C}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--mono);-webkit-font-smoothing:antialiased}
+a{color:var(--mint)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--neon);outline-offset:3px}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+
+/* ---------- top bar ---------- */
+.bar{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:8px;padding:10px max(16px,calc((100% - 1180px)/2));background:transparent;border-bottom:2px solid transparent;transition:background .2s}
+.bar.solid{background:#0B0F0Cf2;border-bottom-color:var(--line)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font:400 30px/1 var(--px);letter-spacing:.04em;min-height:44px}
+.brand canvas{width:28px;height:28px;image-rendering:pixelated}
+.bar nav{display:flex;gap:2px;margin-left:auto}
+.bar nav a{color:var(--mute);text-decoration:none;font-size:13px;padding:0 12px;min-height:44px;display:flex;align-items:center}
+.bar nav a:hover{color:var(--ink)}
+.bar .btn{margin-left:8px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 20px;border:2px solid var(--line2);background:var(--bg2);color:var(--ink);font:600 14px/1 var(--mono);text-decoration:none;cursor:pointer;box-shadow:4px 4px 0 #040705;transition:transform .08s,box-shadow .08s}
+.btn:hover{border-color:var(--mint)}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 #040705}
+.btn.go{background:var(--neon);border-color:var(--neon);color:#03130A;font-weight:800}
+.btn.go:hover{background:#5BFFB0}
+.btn[aria-disabled="true"]{opacity:.55;cursor:default;pointer-events:none}
+.btn .ca{font-weight:400;color:var(--mute);max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:max(640px,100svh);overflow:hidden;display:flex;align-items:center;isolation:isolate;background:var(--bg)}
+#sky{position:absolute;left:0;top:0;z-index:-1;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.hero-copy{position:relative;width:min(1180px,100% - 32px);margin-inline:auto;padding:120px 0 120px;pointer-events:none}
+.hero-copy a,.hero-copy button{pointer-events:auto}
+.count-days{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--mint);border:2px solid var(--line2);background:#0B0F0Ccc;padding:6px 12px}
+.count-days b{font:400 22px/1 var(--px);color:var(--ink)}
+.word{margin:18px 0 0;font:400 clamp(112px,17vw,248px)/.78 var(--px);letter-spacing:.01em;color:var(--ink);
+  text-shadow:0 .045em 0 var(--neon),0 .09em 0 var(--deep),0 0 .4em rgba(0,255,136,.22)}
+.tag{margin:34px 0 0;font:400 clamp(30px,3.3vw,44px)/1.05 var(--px);color:var(--mint);max-width:24ch}
+.sub{margin:14px 0 0;max-width:46ch;color:var(--mute)}
+.clock{display:flex;align-items:flex-end;gap:14px;margin:26px 0 0}
+.clock .lbl{font-size:13px;color:var(--mute);line-height:1.3;padding-bottom:6px}
+.digits{display:flex;gap:4px;font:400 52px/1 var(--px);color:var(--ink)}
+.digits span{display:inline-block;min-width:.62em;text-align:center;background:#0B0F0Ccc;border:2px solid var(--line2);padding:4px 4px 0}
+.digits i{font-style:normal;color:var(--neon);align-self:center}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:30;background:var(--neon);color:#03130A;font-weight:800;padding:12px 18px;border:2px solid #03130A;box-shadow:4px 4px 0 #040705;max-width:calc(100% - 32px)}
+
+/* ---------- sections ---------- */
+section.blk{padding:110px 0 30px;scroll-margin-top:60px}
+.h2{font:400 clamp(48px,6vw,76px)/.9 var(--px);margin:0;color:var(--ink)}
+.lede{color:var(--mute);max-width:60ch;margin:14px 0 0}
+.band{display:block;width:100%;height:72px;image-rendering:pixelated;margin-top:40px}
+
+/* tally */
+.tally{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:48px;align-items:start;margin-top:40px}
+.field label{display:block;font-size:13px;color:var(--mute);margin-bottom:8px}
+.inrow{display:flex;gap:10px;flex-wrap:wrap}
+.inrow input{flex:1 1 260px;min-width:0;min-height:52px;padding:0 14px;background:#070A08;border:2px solid var(--line2);font-size:14px;color:var(--ink)}
+.inrow input:focus{border-color:var(--neon);outline:none}
+.meter{margin-top:34px;display:grid;gap:10px;max-width:520px}
+.mrow{display:grid;grid-template-columns:120px 1fr 44px;gap:12px;align-items:center;font-size:13px;color:var(--mute)}
+.mrow b{font:400 26px/1 var(--px);color:var(--ink);text-align:right}
+.mbar{height:14px;border:2px solid var(--line2);background:repeating-linear-gradient(90deg,#0E1611 0 6px,#0B0F0C 6px 8px)}
+.mbar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--neon) 0 6px,#00C86A 6px 8px)}
+.note{font-size:13px;color:var(--dim);margin-top:12px;max-width:52ch}
+.err{color:#FFB4A8;font-size:14px;margin-top:12px}
+.receipt{position:relative;background:var(--paper);color:var(--paperInk);padding:26px 22px 30px;font-size:13px;line-height:1.5;
+  --z:8px;-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/calc(var(--z)*2) var(--z) repeat-x,linear-gradient(#000 0 0) top/100% calc(100% - var(--z)) no-repeat;
+  mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/calc(var(--z)*2) var(--z) repeat-x,linear-gradient(#000 0 0) top/100% calc(100% - var(--z)) no-repeat;
+  filter:drop-shadow(6px 6px 0 #040705)}
+.receipt h3{font:400 40px/.9 var(--px);margin:0;text-align:center}
+.receipt .rsub{text-align:center;font-size:12px;margin:6px 0 14px;opacity:.7}
+.rule{border:0;border-top:2px dashed #0B0F0C55;margin:12px 0}
+.ln{display:flex;align-items:baseline;gap:6px}
+.ln span:first-child{white-space:nowrap}
+.ln .dots{flex:1;border-bottom:2px dotted #0B0F0C40;transform:translateY(-4px);min-width:12px}
+.ln b{white-space:nowrap;font-weight:800}
+.ln.big b{font:400 30px/1 var(--px)}
+.stamp{position:absolute;right:14px;top:12px;transform:rotate(-12deg);border:3px solid #0A7A43;color:#0A7A43;font:400 44px/1 var(--px);padding:2px 10px;opacity:.9}
+.bars{height:38px;margin-top:14px;display:flex;gap:2px;justify-content:center}
+.bars i{display:block;background:#0B0F0C;width:2px}
+.bars i.w{width:4px}
+.fine{font-size:11px;opacity:.7;margin-top:10px}
+.blank{display:inline-block;width:9ch;height:12px;background:repeating-linear-gradient(90deg,#0B0F0C30 0 4px,transparent 4px 8px);vertical-align:middle}
+.shim{display:inline-block;height:12px;width:10ch;background:linear-gradient(90deg,#0B0F0C22,#0B0F0C55,#0B0F0C22);background-size:200% 100%;animation:sh 1.1s linear infinite;vertical-align:middle}
+@keyframes sh{to{background-position:-200% 0}}
+.receipt.printing{animation:print .6s steps(6) both}
+@keyframes print{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.post{margin-top:18px;width:100%}
+
+/* next drop */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+.stat{border:2px solid var(--line);background:var(--bg2);padding:18px 18px 16px}
+.stat .k{font-size:13px;color:var(--mute)}
+.stat .v{font:400 52px/1 var(--px);margin-top:8px;color:var(--ink);min-height:52px}
+.stat .v small{font:400 24px/1 var(--px);color:var(--mint);margin-left:6px}
+.stat .s{font-size:12px;color:var(--dim);margin-top:6px}
+.board{margin-top:24px;border:2px solid var(--line);background:var(--bg2)}
+.brow{display:grid;grid-template-columns:44px minmax(0,1.3fr) minmax(0,1fr) 70px minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:center;padding:0 16px;min-height:44px;border-top:1px solid var(--line)}
+.brow:first-child{border-top:0}
+.brow.hd{color:var(--dim);font-size:12px;min-height:40px}
+.brow .r{font:400 24px/1 var(--px);color:var(--mint)}
+.brow a{color:var(--ink);text-decoration:none;min-height:44px;display:flex;align-items:center}
+.brow a:hover{color:var(--neon)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.bfoot{padding:12px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+.empty{display:flex;gap:20px;align-items:center;padding:28px 22px;border:2px dashed var(--line2);background:var(--bg2);margin-top:24px}
+.empty canvas{width:72px;height:72px;image-rendering:pixelated;flex:none}
+.empty p{margin:0;max-width:56ch}
+.empty .t{font:400 30px/1 var(--px);color:var(--ink);margin-bottom:6px}
+.empty .d{color:var(--mute);font-size:14px}
+.skrow{height:44px;border-top:1px solid var(--line);background:linear-gradient(90deg,transparent,#1a2a2088,transparent);background-size:200% 100%;animation:sh 1.3s linear infinite}
+
+/* drops */
+.drows .brow{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1.2fr)}
+
+/* how */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:40px;counter-reset:s}
+.step{border-top:4px solid var(--neon);padding-top:14px}
+.step .n{font:400 44px/1 var(--px);color:var(--neon)}
+.step h3{font:400 30px/1 var(--px);margin:6px 0 8px}
+.step p{margin:0;color:var(--mute);font-size:14px}
+.example{margin-top:48px;border:2px solid var(--line);background:var(--bg2);padding:22px}
+.example h3{font:400 36px/1 var(--px);margin:0 0 6px}
+.ex{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+.ex th{color:var(--dim);font-weight:400;text-align:left;font-size:12px;padding:6px 8px}
+.ex td{padding:10px 8px;border-top:1px solid var(--line)}
+.ex td.num,.ex th.num{text-align:right}
+.ex .out{color:var(--neon);font-weight:800}
+.ex .off td{color:var(--dim)}
+.exnote{color:var(--mute);font-size:14px;margin:14px 0 0}
+.scrollx{overflow-x:auto}
+
+/* rules */
+.rules{margin:36px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}
+.rules li{display:grid;grid-template-columns:36px 1fr;gap:8px;padding:16px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
+.rules li b{color:var(--ink);font-weight:600}
+.rules li::before{content:"";width:10px;height:10px;margin-top:6px;background:var(--neon);box-shadow:0 0 0 3px #0B0F0C,0 0 0 5px var(--deep)}
+code{font-family:var(--mono);color:var(--mint);font-size:.95em;word-break:break-all}
+
+footer{margin-top:110px;border-top:2px solid var(--line);padding:30px 0 50px;color:var(--dim);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
+footer a{color:var(--mute);min-height:44px;display:inline-flex;align-items:center}
+
+@media (max-width:900px){
+  .tally{grid-template-columns:minmax(0,1fr)}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rules{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body{font-size:14px}
+  .bar nav{display:none}
+  .bar .btn{margin-left:auto}
+  .hero{align-items:flex-end;min-height:100svh}
+  .hero-copy{padding:356px 0 96px}
+  .word{font-size:clamp(96px,30vw,132px)}
+  .tag{margin-top:26px;font-size:30px}
+  .digits{font-size:44px}
+  .ctas .btn{flex:1 1 auto}
+  .inrow .btn{flex:1 1 100%}
+  .mrow{grid-template-columns:96px 1fr 40px}
+  section.blk{padding-top:80px}
+  .stats{grid-template-columns:1fr;gap:10px}
+  .stat .v{font-size:44px;min-height:44px}
+  .brow{grid-template-columns:34px minmax(0,1.2fr) minmax(0,1fr) 54px;gap:8px;padding:0 12px}
+  .brow .hide-s{display:none}
+  .drows .brow{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.7fr)}
+  .steps{grid-template-columns:1fr}
+  .empty{flex-direction:column;align-items:flex-start}
+  .receipt{padding:22px 16px 28px}
+  .stamp{font-size:34px;right:10px}
+  .ln{flex-wrap:wrap}
+  .ln b{margin-left:auto}
+  .ln span:first-child{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .shim,.skrow,.receipt.printing{animation:none}
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="#top" aria-label="VESTED home"><canvas id="logoPill" width="14" height="14" aria-hidden="true"></canvas>VESTED</a>
+  <nav aria-label="Sections">
+    <a href="#tally">Your tally</a><a href="#next">Next drop</a><a href="#drops">Drops</a><a href="#how">How it works</a><a href="#rules">Rules</a>
+  </nav>
+  <a class="btn go" id="barBuy" href="#" target="_blank" rel="noopener">Buy $VESTED</a>
+</header>
+
+<main id="top">
+<section class="hero" aria-label="VESTED">
+  <canvas id="sky" aria-label="A pixel pill cracking open and dropping coins. Click to crack it." role="img"></canvas>
+  <div class="hero-copy">
+    <div class="count-days"><b id="daysN">…</b> days since the airdrop was promised</div>
+    <h1 class="word">VESTED</h1>
+    <p class="tag">The airdrop pump.fun never sent.</p>
+    <p class="sub">Every hour, $VESTED's creator fees go out in SOL to holders, weighted by how much each wallet has paid pump.fun in fees.</p>
+    <div class="clock" aria-live="off">
+      <div class="lbl">next drop<br>in</div>
+      <div class="digits" id="clockHero"><span>-</span><span>-</span><i>:</i><span>-</span><span>-</span></div>
+    </div>
+    <div class="ctas">
+      <a class="btn go" id="heroBuy" href="#" target="_blank" rel="noopener">Buy $VESTED</a>
+      <button class="btn" id="caBtn" type="button"><span>CA</span><span class="ca" id="caText">posts at launch</span></button>
+      <a class="btn" id="xBtn" href="#" target="_blank" rel="noopener">X</a>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="tally" aria-labelledby="tallyH">
+  <div class="wrap">
+    <h2 class="h2" id="tallyH">Check your tally</h2>
+    <p class="lede">Paste a wallet. We read its last 30 days on pump.fun and PumpSwap and print what pump.fun owes it.</p>
+    <div class="tally">
+      <div>
+        <form class="field" id="tallyForm" autocomplete="off">
+          <label for="walletIn">Solana wallet address</label>
+          <div class="inrow">
+            <input id="walletIn" name="wallet" spellcheck="false" autocapitalize="off" inputmode="text" aria-describedby="tallyNote">
+            <button class="btn go" type="submit" id="tallyGo">Print my receipt</button>
+          </div>
+          <p class="err" id="tallyErr" role="alert" hidden></p>
+          <div class="meter" aria-label="Fees paid to multiplier">
+            <div class="mrow"><span>0 SOL in fees</span><span class="mbar"><i style="width:10%"></i></span><b>1×</b></div>
+            <div class="mrow"><span>2 SOL</span><span class="mbar"><i style="width:30%"></i></span><b>3×</b></div>
+            <div class="mrow"><span>5 SOL</span><span class="mbar"><i style="width:60%"></i></span><b>6×</b></div>
+            <div class="mrow"><span>9+ SOL</span><span class="mbar"><i style="width:100%"></i></span><b>10×</b></div>
+          </div>
+          <p class="note" id="tallyNote">Fees are estimated at a 1% fee on your pump.fun volume (bonding curve + PumpSwap). Multiplier = 1 + fees paid in SOL, capped at 10×.</p>
+        </form>
+      </div>
+      <div>
+        <div class="receipt" id="receipt" aria-live="polite"></div>
+        <a class="btn post" id="postIt" href="#" target="_blank" rel="noopener" hidden>Post it on X</a>
+      </div>
+    </div>
+  </div>
+  <canvas class="band" data-band="1" aria-hidden="true"></canvas>
+</section>
+
+<section class="blk" id="next" aria-labelledby="nextH">
+  <div class="wrap">
+    <h2 class="h2" id="nextH">Next drop</h2>
+    <p class="lede">Fees pile up in the creator vault every trade. At the top of the hour they're claimed and split across the top 200 wallets by weight.</p>
+    <div class="stats">
+      <div class="stat"><div class="k">Unclaimed fees right now</div><div class="v" id="stPending"></div><div class="s" id="stPendingS"></div></div>
+      <div class="stat"><div class="k">Eligible holders</div><div class="v" id="stElig"></div><div class="s" id="stEligS"></div></div>
+      <div class="stat"><div class="k">Pays out in</div><div class="v" id="stClock">--:--</div><div class="s">every hour at :00 UTC</div></div>
+    </div>
+    <div id="boardBox"></div>
+  </div>
+</section>
+
+<section class="blk" id="drops" aria-labelledby="dropsH">
+  <div class="wrap">
+    <h2 class="h2" id="dropsH">Drops</h2>
+    <p class="lede">Every payout is on-chain, signed by the creator wallet, with the memo <code>VESTED|hour|lamports</code>.</p>
+    <div id="dropsBox"></div>
+  </div>
+  <canvas class="band" data-band="2" aria-hidden="true"></canvas>
+</section>
+
+<section class="blk" id="how" aria-labelledby="howH">
+  <div class="wrap">
+    <h2 class="h2" id="howH">How it works</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Trades make fees</h3><p>Every $VESTED trade pays pump.fun's creator fee into the coin's creator vault, on the bonding curve and on PumpSwap after migration.</p></div>
+      <div class="step"><div class="n">2</div><h3>:00 claim</h3><p>At the top of every hour (UTC) the engine claims the vault from the creator wallet and pays out the same minute.</p></div>
+      <div class="step"><div class="n">3</div><h3>Weigh holders</h3><p>Hold at least 100,000 $VESTED. Your weight is your balance × your multiplier: 1 + the SOL you paid pump.fun in fees over 30 days, capped at 10×.</p></div>
+      <div class="step"><div class="n">4</div><h3>SOL lands</h3><p>The top 200 wallets by weight split the pot pro-rata. Cuts under 0.001 SOL roll into the next hour.</p></div>
+    </div>
+    <div class="example">
+      <h3>One hour, worked through</h3>
+      <p class="exnote" style="margin-top:0">Say the vault holds 3 SOL at :00 and only these four wallets hold $VESTED.</p>
+      <div class="scrollx">
+      <table class="ex">
+        <thead><tr><th>Wallet</th><th class="num">Holds</th><th class="num">pump.fun volume, 30d</th><th class="num">Fees (1%)</th><th class="num">Multiplier</th><th class="num">Weight</th><th class="num">Gets</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td class="num">10,000,000</td><td class="num">200 SOL</td><td class="num">2 SOL</td><td class="num">1 + 2 = 3×</td><td class="num">30,000,000</td><td class="num out">1.2 SOL</td></tr>
+          <tr><td>B</td><td class="num">25,000,000</td><td class="num">0 SOL</td><td class="num">0 SOL</td><td class="num">1×</td><td class="num">25,000,000</td><td class="num out">1.0 SOL</td></tr>
+          <tr><td>C</td><td class="num">2,000,000</td><td class="num">1,400 SOL</td><td class="num">14 SOL</td><td class="num">capped 10×</td><td class="num">20,000,000</td><td class="num out">0.8 SOL</td></tr>
+          <tr class="off"><td>D</td><td class="num">50,000</td><td class="num">300 SOL</td><td class="num">3 SOL</td><td class="num">n/a</td><td class="num">under 100k</td><td class="num">0</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="exnote">Total weight is 30M + 25M + 20M = 75M. A gets 30/75 of 3 SOL = 1.2 SOL, B gets 25/75 = 1.0 SOL, C gets 20/75 = 0.8 SOL. C holds a tenth of B's bag but has paid pump.fun 14 SOL, so C's 10× cap still lands it 0.8 SOL.</p>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="rules" aria-labelledby="rulesH">
+  <div class="wrap">
+    <h2 class="h2" id="rulesH">Rules</h2>
+    <ul class="rules">
+      <li><span><b>Every hour at :00 UTC</b> the engine claims $VESTED's accrued pump.fun creator fees (bonding curve creator vault, plus the PumpSwap creator fee after migration) and pays them out the same minute.</span></li>
+      <li><span><b>Eligible:</b> hold at least 100,000 $VESTED (of 1,000,000,000) at the snapshot. The bonding curve, the pool and the creator wallet are never paid.</span></li>
+      <li><span><b>Weight</b> = balance × multiplier. <b>Multiplier</b> = 1 + min(9, F), where F is the SOL your wallet paid pump.fun in fees over the last 30 days.</span></li>
+      <li><span><b>F is estimated at a 1% fee on your pump.fun volume</b>, bonding curves and PumpSwap, read from Helius parsed transactions. 0 fees = 1×, 2 SOL = 3×, 9 SOL or more = 10×.</span></li>
+      <li><span><b>Top 200</b> eligible holders by weight are paid, pro-rata to weight.</span></li>
+      <li><span><b>Dust:</b> payouts below 0.001 SOL are skipped and roll into the next hour's pot.</span></li>
+      <li><span><b>Receipts:</b> every payout tx carries the memo <code>VESTED|&lt;unix hour&gt;|&lt;total lamports&gt;</code>.</span></li>
+      <li><span><b>Refresh:</b> each wallet's F is looked up at most once every 6 hours.</span></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Not affiliated with pump.fun. $VESTED is a memecoin. Shares and fees on this page are estimates.</span>
+    <span><a id="ftChart" href="#" target="_blank" rel="noopener">Chart</a> &nbsp; <a id="ftX" href="#" target="_blank" rel="noopener">X</a></span>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="config.js"></script>
+<script>
+(() => {
+'use strict';
+const CFG = Object.assign({NAME:'VESTED',TICKER:'VESTED',CA:'',X:'',BUY:'',CHART:'',ENGINE:''}, window.VESTED_CFG || {});
+const CA = (CFG.CA || '').trim(), ENGINE = (CFG.ENGINE || '').trim();
+const BUY = CFG.BUY || (CA ? 'https://pump.fun/coin/' + CA : '');
+const CHART = CFG.CHART || (CA ? 'https://gmgn.ai/sol/token/' + CA : '');
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (id) => document.getElementById(id);
+const LAMPORTS = 1e9, MIN_HOLD = 100000;
+
+/* ---------------- formatting ---------------- */
+const short = (a) => a ? a.slice(0, 4) + '…' + a.slice(-4) : '';
+const fmtSol = (s, d) => { if (s == null || !isFinite(s)) return '—'; d = d ?? (s >= 100 ? 1 : s >= 1 ? 3 : 4); return s.toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d}); };
+const fmtTok = (n) => { if (n == null || !isFinite(n)) return '—'; if (n >= 1e9) return (n/1e9).toFixed(2)+'B'; if (n >= 1e6) return (n/1e6).toFixed(2)+'M'; if (n >= 1e3) return (n/1e3).toFixed(1)+'K'; return Math.round(n).toString(); };
+const fmtPct = (x) => x == null ? '—' : (x*100 >= 10 ? (x*100).toFixed(1) : (x*100).toFixed(2)) + '%';
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isAddr = (s) => /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s);
+
+/* ---------------- links / CA ---------------- */
+function setLink(el, href, offText) {
+  if (href) { el.href = href; el.removeAttribute('aria-disabled'); }
+  else { el.removeAttribute('href'); el.setAttribute('aria-disabled', 'true'); if (offText) el.textContent = offText; }
+}
+setLink($('heroBuy'), BUY, 'Buy at launch');
+setLink($('barBuy'), BUY, 'Buy at launch');
+setLink($('xBtn'), CFG.X);
+setLink($('ftX'), CFG.X);
+setLink($('ftChart'), CHART);
+if (CA) $('caText').textContent = short(CA);
+$('caBtn').addEventListener('click', async () => {
+  if (!CA) { toast('The CA posts here at launch.'); return; }
+  try { await navigator.clipboard.writeText(CA); toast('CA copied'); } catch { toast(CA); }
+});
+let toastT;
+function toast(msg, ms = 2600) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, ms); }
+
+/* days since the airdrop was promised (Jul 13 2025 UTC = day 0) */
+addEventListener('scroll', () => document.querySelector('.bar').classList.toggle('solid', scrollY > 40), { passive: true });
+$('daysN').textContent = Math.floor((Date.now() - Date.UTC(2025, 6, 13)) / 864e5);
+
+/* ---------------- countdown ---------------- */
+function msToHour() { return 3600000 - (Date.now() % 3600000); }
+function tickClock() {
+  const s = Math.floor(msToHour() / 1000), m = Math.floor(s / 60) % 60, ss = s % 60;
+  const mm = String(m).padStart(2, '0'), sx = String(ss).padStart(2, '0');
+  $('clockHero').innerHTML = `<span>${mm[0]}</span><span>${mm[1]}</span><i>:</i><span>${sx[0]}</span><span>${sx[1]}</span>`;
+  $('stClock').textContent = mm + ':' + sx;
+}
+tickClock(); setInterval(tickClock, 1000);
+
+/* ================= PIXEL ENGINE ================= */
+const hex = (h) => { const n = parseInt(h.slice(1), 16); return (255 << 24 | (n & 255) << 16 | (n >> 8 & 255) << 8 | n >> 16) >>> 0; };
+const BAYER = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5].map((v) => (v + .5) / 16);
+const bay = (x, y) => BAYER[(y & 3) * 4 + (x & 3)];
+const C = {
+  bg: hex('#0B0F0C'), bg2: hex('#0E1611'), bg3: hex('#112016'),
+  ring: hex('#86EFAC'), ringHi: hex('#E9FFF1'), glow1: hex('#2F6B4A'), glow2: hex('#173826'), glow3: hex('#10241A'),
+  cl0: hex('#2A3B31'), cl1: hex('#3B5446'), cl2: hex('#4A6656'), cl3: hex('#5E8270'),
+  out: hex('#040705'), star: hex('#E9FFF1'), starD: hex('#7E9C8C'),
+  g: [hex('#06512C'), hex('#0B8A4A'), hex('#00C86A'), hex('#00FF88'), hex('#9DFFCB')],
+  w: [hex('#6E9483'), hex('#B4D4C3'), hex('#E2F5EA'), hex('#FFFFFF'), hex('#FFFFFF')],
+  hole: hex('#03140B'), coinG: hex('#00FF88'), coinW: hex('#E9FFF1'), coinIn: hex('#0A3A22'), coinInW: hex('#1C3D2D'), coinHalo: hex('#123A26'),
+};
+
+function rng(seed) { let s = seed >>> 0 || 1; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+
+/* cloud sprite: union of bumps along a base, dithered fill like the PFP */
+function makeCloud(w, h, seed, flip) {
+  const r = rng(seed), bumps = [];
+  let x = -6;
+  while (x < w + 6) { const rad = 6 + r() * (h * .45); bumps.push([x, h - rad * (.55 + r() * .5) - (flip ? 0 : 0), rad]); x += rad * (.8 + r() * .5); }
+  const px = new Uint32Array(w * h);
+  for (let y = 0; y < h; y++) for (let xx = 0; xx < w; xx++) {
+    let depth = -1;
+    for (const [bx, by, br] of bumps) { const d = br - Math.hypot(xx - bx, y - by); if (d > depth) depth = d; }
+    if (y > h * .55) depth = Math.max(depth, (y - h * .55) + 1);
+    if (depth < 0) continue;
+    const yy = flip ? h - 1 - y : y;
+    const t = bay(xx, yy), fade = y / h;
+    let c;
+    if (depth < 1.6) c = C.cl3;
+    else if (depth < 5) c = t < .55 ? C.cl2 : C.cl3;
+    else if (depth < 11) c = t < .5 ? C.cl1 : C.cl2;
+    else c = t < .3 + fade * .4 ? C.cl0 : (t < .8 ? C.cl1 : C.cl2);
+    px[yy * w + xx] = c;
+  }
+  return { w, h, px };
+}
+function blit(buf, W, H, sp, ox, oy) {
+  ox |= 0; oy |= 0;
+  for (let y = 0; y < sp.h; y++) { const ty = y + oy; if (ty < 0 || ty >= H) continue;
+    for (let x = 0; x < sp.w; x++) { const tx = x + ox; if (tx < 0 || tx >= W) continue; const c = sp.px[y * sp.w + x]; if (c) buf[ty * W + tx] = c; } }
+}
+
+/* ---------------- hero sky ---------------- */
+const sky = $('sky'), hero = sky.parentElement;
+const ctx = sky.getContext('2d');
+let W = 0, H = 0, S = 4, img, buf, base, clouds = [], stars = [], P = {}, coins = [], pile = [], t0 = performance.now(), lastLand = 0, lastDrip = 0;
+let crack = { t: -10, on: false };
+
+function layout() {
+  const cw = hero.clientWidth, ch = hero.clientHeight;
+  const mobile = cw < 700;
+  S = mobile ? 3 : (cw > 1700 ? 5 : 4);
+  W = Math.ceil(cw / S); H = Math.ceil(ch / S);
+  sky.width = W; sky.height = H; sky.style.width = W * S + 'px'; sky.style.height = H * S + 'px';
+  img = ctx.createImageData(W, H); buf = new Uint32Array(img.data.buffer);
+  if (mobile) { P.R = Math.min(W * .3, 40); P.cx = W * .5; P.cy = (64 + 136) / S; }
+  else { P.cx = W * .7; P.cy = H * .47; P.R = Math.min(H * .33, W * .2); }
+  P.a = P.R * .56; P.r = P.R * .29; P.ang = -0.7;
+  P.orx = P.R * 1.45; P.ory = P.R * .34; P.otilt = -0.36;
+  // base: dithered vignette + planet circle with glow
+  base = new Uint32Array(W * H);
+  const glowR = P.R * 1.9;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const d = Math.hypot(x - P.cx, y - P.cy), t = bay(x, y);
+    let c = C.bg;
+    const g = 1 - d / glowR;
+    if (g > 0) { if (g * .55 > t) c = C.bg2; if (g * .5 > t + .25) c = C.bg3; }
+    const ring = Math.abs(d - P.R);
+    if (ring < .62) c = C.ring;
+    else if (ring < 1.5) c = C.glow1;
+    else if (ring < 2.6) { if (t < .7) c = C.glow2; }
+    else if (ring < 4.2) { if (t < .35) c = C.glow3; }
+    base[y * W + x] = c;
+  }
+  // clouds like the PFP: top-left, bottom-left, bottom-right
+  clouds = mobile ? [
+    { sp: makeCloud(Math.round(W * .75), 40, 11, true), x: -W * .2, y: -6, drift: 3, ph: 0 },
+    { sp: makeCloud(Math.round(W * .6), 26, 23, false), x: -W * .3, y: H - 22, drift: 4, ph: 1 },
+    { sp: makeCloud(Math.round(W * .6), 30, 37, false), x: W * .62, y: H - 26, drift: 5, ph: 2 },
+  ] : [
+    { sp: makeCloud(Math.round(W * .45), 56, 11, true), x: -W * .06, y: -8, drift: 5, ph: 0 },
+    { sp: makeCloud(Math.round(W * .38), 44, 23, false), x: -W * .08, y: H - 38, drift: 6, ph: 1.4 },
+    { sp: makeCloud(Math.round(W * .5), 58, 37, false), x: W * .58, y: H - 50, drift: 7, ph: 2.6 },
+  ];
+  const r = rng(99); stars = [];
+  const n = Math.round(W * H / 900);
+  for (let i = 0; i < n; i++) stars.push({ x: (r() * W) | 0, y: (r() * H * .85) | 0, big: r() < .18, ph: r() * 6.28, sp: .6 + r() * 1.6 });
+  pile = []; coins = [];
+}
+
+function put(x, y, c) { x |= 0; y |= 0; if (x >= 0 && y >= 0 && x < W && y < H) buf[y * W + x] = c; }
+
+function drawOrbit(t, front) {
+  const N = Math.ceil((P.orx + P.ory) * 7), ct = Math.cos(P.otilt), st = Math.sin(P.otilt);
+  const spin = t * .35;
+  for (let i = 0; i < N; i++) {
+    const th = i / N * Math.PI * 2;
+    const ly = Math.sin(th) * P.ory;
+    const isFront = ly > 0;
+    if (isFront !== front) continue;
+    const lx = Math.cos(th) * P.orx;
+    const x = P.cx + lx * ct - ly * st, y = P.cy + lx * st + ly * ct;
+    // travelling bright segments make the ring read as rotating
+    const ph = ((th / (Math.PI * 2) - spin) % 1 + 1) % 1;
+    const seg = (ph * 3) % 1;
+    let c = front ? C.ring : C.glow1;
+    if (seg < .12) c = front ? C.ringHi : C.ring;
+    const fade = Math.abs(Math.cos(th)); // ends fade like the PFP
+    if (!front && fade > .9 && bay(x | 0, y | 0) < .5) continue;
+    put(x, y, c);
+    if (front && seg < .12) { put(x, y - 1, C.glow1); put(x, y + 1, C.glow1); }
+  }
+  // a tiny coin moon riding the ring
+  const th = spin * Math.PI * 2 * 1.0 + 1.2, ly = Math.sin(th) * P.ory;
+  if ((ly > 0) === front) {
+    const lx = Math.cos(th) * P.orx;
+    drawCoin(P.cx + lx * ct - ly * st, P.cy + lx * st + ly * ct, 1, 1, false, 2.2);
+  }
+}
+
+const jag = (v) => { const k = ((Math.floor(v * .55) % 2) + 2) % 2; const f = v * .55 - Math.floor(v * .55); return (k ? f : 1 - f) * 2.2 - 1.1; };
+const CRACKS = [ // pill-local [u, v] polylines (units of r), on the white side of the seam
+  [[0.10, -0.15], [0.32, -0.32], [0.38, -0.55], [0.6, -0.62]],
+  [[0.12, 0.1], [0.3, 0.22], [0.45, 0.18]],
+  [[-0.05, 0.35], [-0.25, 0.5], [-0.3, 0.75]],
+];
+
+function drawPill(t) {
+  const ct = performance.now() / 1000 - crack.t;
+  let gap = 0, shake = 0, tilt = 0;
+  if (ct >= 0 && ct < 3.4) {
+    if (ct < .45) shake = 1;
+    else if (ct < 1.0) gap = (ct - .45) / .55 * P.r * .55;
+    else if (ct < 2.4) gap = P.r * .55;
+    else gap = P.r * .55 * (1 - (ct - 2.4));
+    tilt = gap / P.r * .25;
+  }
+  const ang = P.ang + Math.sin(t * .55) * .14 + Math.sin(t * 1.3) * .03;
+  const cx = P.cx + (shake ? (Math.random() * 2 - 1) : 0), cy = P.cy + Math.sin(t * .9) * 1.6 + (shake ? (Math.random() * 2 - 1) : 0);
+  const ax = Math.cos(ang), ay = Math.sin(ang), qx = -ay, qy = ax; // axis (green→white), perp (towards lower-right)
+  const a = P.a, r = P.r, seam = r * .1;
+  P.cur = { cx, cy, ax, ay, qx, qy, gap };
+  const L = [-.52, -.68, .52]; // light from upper-left, toward viewer
+  const ext = a + r + 8 + gap;
+  const x0 = Math.max(0, (cx - ext) | 0), x1 = Math.min(W - 1, (cx + ext) | 0), y0 = Math.max(0, (cy - ext) | 0), y1 = Math.min(H - 1, (cy + ext) | 0);
+  for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+    const px = x + .5 - cx, py = y + .5 - cy;
+    let u = px * ax + py * ay, v = px * qx + py * qy;
+    const cut = seam + jag(v);
+    const green = u < cut + 0; // which half this pixel sits in (pre-shift)
+    // shift halves apart along the axis, white half also rotates a hair
+    let uu = green ? u + gap * .5 : u - gap * .5, vv = v;
+    if (!green && tilt) { const du = uu - cut; vv = v + du * tilt * .0; }
+    const half = (uu < cut) ? 'g' : 'w';
+    if ((half === 'g') !== green && gap > .5) { // inside the gap
+      continue;
+    }
+    const cu = Math.max(-a, Math.min(a, uu));
+    const du = uu - cu, dist = Math.hypot(du, vv) - r;
+    const t2 = bay(x, y);
+    if (dist > 0) { // glow halo
+      if (dist < 7) { const g = 1 - dist / 7; const cur = buf[y * W + x];
+        if (cur === C.bg || cur === C.bg2 || cur === C.bg3) { if (g * .9 > t2) buf[y * W + x] = g > .55 ? C.glow2 : C.glow3; } }
+      continue;
+    }
+    // cut faces when open
+    const faceD = Math.abs(uu - cut);
+    if (gap > .5 && faceD < 1.2) { buf[y * W + x] = C.out; continue; }
+    if (dist > -1.6) { buf[y * W + x] = C.out; continue; }
+    // normal for shading (screen space)
+    const nxl = du / r, nvl = vv / r;
+    const nx = nxl * ax + nvl * qx, ny = nxl * ay + nvl * qy;
+    const nz = Math.sqrt(Math.max(0, 1 - nx * nx - ny * ny));
+    let lam = Math.max(0, nx * L[0] + ny * L[1] + nz * L[2]);
+    const spec = Math.pow(Math.max(0, 2 * lam * nz - L[2]), 12);
+    let lvl = Math.min(3, Math.max(0, Math.floor(.9 + lam * 2.9 + (t2 - .5) * .9)));
+    const pal = half === 'g' ? C.g : C.w;
+    let c = pal[lvl];
+    if (spec > .55 || (spec > .3 && t2 < .5)) c = pal[4];
+    // seam line when closed
+    if (gap <= .5 && faceD < .7) c = half === 'g' ? C.g[0] : C.w[0];
+    buf[y * W + x] = c;
+  }
+  // crack lines + the hole the coins leak from
+  const toS = (u, v) => [cx + (u * ax + v * qx), cy + (u * ay + v * qy)];
+  const off = gap * .5;
+  for (const line of CRACKS) for (let i = 0; i < line.length - 1; i++) {
+    const [u1, v1] = line[i], [u2, v2] = line[i + 1];
+    const steps = Math.ceil(Math.hypot(u2 - u1, v2 - v1) * r * 2.2);
+    for (let k = 0; k <= steps; k++) { const f = k / steps; const [sx, sy] = toS(seam + (u1 + (u2 - u1) * f) * r + off, (v1 + (v2 - v1) * f) * r); put(sx, sy, C.out); }
+  }
+  if (gap <= .5) { // the leak hole on the lower side of the seam
+    for (let dv = .35; dv <= .85; dv += .08) for (let du = -1.6; du <= 1.6; du += .5) {
+      const w = 1.6 * (1 - Math.abs(dv - .6) / .3);
+      if (Math.abs(du) > w) continue;
+      const [sx, sy] = toS(seam + du + jag(dv * r), dv * r); put(sx, sy, C.hole);
+    }
+    const [hx, hy] = toS(seam, .58 * r); put(hx, hy, C.coinG);
+  }
+  P.leak = toS(seam + off, .62 * r);
+}
+
+function drawCoin(x, y, sx, palette, flat, rad = 3.2) {
+  const rx = Math.max(.6, rad * sx), ry = flat ? rad * .45 : rad;
+  const ring = palette ? C.coinW : C.coinG, inner = palette ? C.coinInW : C.coinIn;
+  const X0 = Math.floor(x - rx - 1), X1 = Math.ceil(x + rx + 1), Y0 = Math.floor(y - ry - 1), Y1 = Math.ceil(y + ry + 1);
+  for (let yy = Y0; yy <= Y1; yy++) for (let xx = X0; xx <= X1; xx++) {
+    if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue;
+    const dx = (xx + .5 - x) / rx, dy = (yy + .5 - y) / ry, d = Math.sqrt(dx * dx + dy * dy);
+    if (d > 1.32) continue;
+    if (d > 1.0) { if (!flat && bay(xx, yy) < .5) buf[yy * W + xx] = C.coinHalo; continue; }
+    let c = d > .58 ? ring : inner;
+    if (d > .58 && dx < -.2 && dy < -.2) c = C.ringHi;
+    if (d <= .58 && dx > 0 && dy > 0 && !flat) c = ring;
+    if (flat && dy < -.3) c = palette ? C.coinW : C.g[4];
+    buf[yy * W + xx] = c;
+  }
+}
+
+function spawnCoin(burst) {
+  const L = P.leak || [P.cx, P.cy], cur = P.cur || { qx: .6, qy: .8, ax: .8, ay: -.6 };
+  const sp = burst ? 1.2 + Math.random() * 2.2 : .5 + Math.random() * .5;
+  const spread = (Math.random() - .5) * (burst ? 2.2 : .5);
+  coins.push({
+    x: L[0], y: L[1],
+    vx: cur.qx * sp + cur.ax * spread + (burst ? (Math.random() - .5) * 1.2 : 0),
+    vy: cur.qy * sp + cur.ay * spread - (burst ? Math.random() * 1.6 : 0),
+    spin: Math.random() * 6, vs: .15 + Math.random() * .25, pal: Math.random() < .4 ? 1 : 0,
+  });
+}
+
+function heightAt(x) { // top of pile at column x
+  let top = H - 1;
+  for (const p of pile) if (Math.abs(p.x - x) < 3.4) top = Math.min(top, p.y - 3.6);
+  return top;
+}
+
+function step(dt) {
+  const g = .09 * dt;
+  for (let i = coins.length - 1; i >= 0; i--) {
+    const c = coins[i];
+    c.vy += g; c.x += c.vx * dt; c.y += c.vy * dt; c.spin += c.vs * dt; c.vx *= .995;
+    if (c.x < -8 || c.x > W + 8) { coins.splice(i, 1); continue; }
+    const floor = heightAt(c.x);
+    if (c.y >= floor) {
+      if (c.vy > 1.4 && !c.b) { c.vy *= -.32; c.vx *= .6; c.y = floor; c.b = 1; continue; }
+      // roll off the heap toward the lower side so the pile spreads into a mound
+      const hl = heightAt(c.x - 3), hr = heightAt(c.x + 3);
+      if (Math.max(hl, hr) > floor + 1.5 && (c.roll = (c.roll || 0) + 1) < 60) { c.x += hl > hr ? -1.2 : 1.2; c.y = floor - .5; c.vy = 0; continue; }
+      pile.push({ x: c.x, y: floor, pal: c.pal }); coins.splice(i, 1); lastLand = performance.now();
+    }
+  }
+  // drain the pile into the bottom edge so it never buries the page
+  const maxH = pile.reduce((m, p) => Math.max(m, H - p.y), 0);
+  if ((performance.now() - lastLand > 3500 || maxH > Math.min(26, H * .1)) && pile.length) {
+    step.acc = (step.acc || 0) + dt;
+    if (step.acc > 5) { step.acc = 0; for (const p of pile) p.y += 1; pile = pile.filter((p) => p.y < H + 3); }
+  }
+}
+
+function render(now) {
+  const t = (now - t0) / 1000;
+  buf.set(base);
+  // stars twinkle
+  for (const s of stars) {
+    const tw = Math.sin(t * s.sp + s.ph);
+    if (tw < -.6) continue;
+    const c = tw > .3 ? C.star : C.starD;
+    put(s.x, s.y, c);
+    if (s.big) { put(s.x, s.y + 1, c); put(s.x + 1, s.y, c); put(s.x + 1, s.y + 1, c); if (tw > .7) { put(s.x - 1, s.y, C.starD); put(s.x + 2, s.y + 1, C.starD); } }
+  }
+  drawOrbit(t, false);
+  drawPill(t);
+  drawOrbit(t, true);
+  for (const cl of clouds) blit(buf, W, H, cl.sp, cl.x + Math.sin(t * .05 + cl.ph) * cl.drift, cl.y);
+  for (const p of pile) drawCoin(p.x, p.y - 1.4, 1, p.pal, false, 2.8);
+  for (const c of coins) drawCoin(c.x, c.y, Math.abs(Math.cos(c.spin)), c.pal, false);
+  ctx.putImageData(img, 0, 0);
+}
+
+let running = true, last = performance.now(), vis = true;
+function frame(now) {
+  if (!running) return;
+  const dt = Math.min(3, (now - last) / 16.67); last = now;
+  if (vis) {
+    if (now - lastDrip > 1900) { lastDrip = now; spawnCoin(false); }
+    const ct = now / 1000 - crack.t;
+    if (ct > .45 && ct < 1.9) { const n = Math.random() < .9 ? 2 : 1; for (let i = 0; i < n; i++) spawnCoin(true); }
+    step(dt); render(now);
+  }
+  requestAnimationFrame(frame);
+}
+function crackNow() { if (performance.now() / 1000 - crack.t > 3.4) crack.t = performance.now() / 1000; if (RM) { render(performance.now()); } }
+sky.addEventListener('click', crackNow);
+
+layout();
+if (RM) { // one still frame with a few coins already fallen
+  for (let i = 0; i < 6; i++) { spawnCoin(false); }
+  for (let k = 0; k < 40; k++) step(1);
+  render(performance.now());
+} else {
+  requestAnimationFrame(frame);
+  new IntersectionObserver((es) => { vis = es[0].isIntersecting; }).observe(hero);
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) { last = performance.now(); requestAnimationFrame(frame); } });
+}
+let rT; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { const w = Math.ceil(hero.clientWidth / S); if (Math.abs(w - W) > 2 || Math.abs(Math.ceil(hero.clientHeight / S) - H) > 30) { layout(); if (RM) render(performance.now()); } }, 150); });
+
+/* small static pixel art: logo pill, empty-state pill, cloud bands */
+function miniPill(cv, cracked) {
+  const w = cv.width, h = cv.height, c2 = cv.getContext('2d'), im = c2.createImageData(w, h), b = new Uint32Array(im.data.buffer);
+  const cx = w / 2, cy = h / 2, a = w * .2, r = w * .17, ax = Math.cos(-.75), ay = Math.sin(-.75), qx = -ay, qy = ax;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const px = x + .5 - cx, py = y + .5 - cy, u = px * ax + py * ay, v = px * qx + py * qy;
+    const d = Math.hypot(u - Math.max(-a, Math.min(a, u)), v) - r;
+    if (d > 0) continue;
+    let c = d > -1 ? C.out : (u < 0 ? (v < -r * .3 ? C.g[4] : v > r * .4 ? C.g[1] : C.g[3]) : (v < -r * .3 ? C.w[3] : v > r * .4 ? C.w[1] : C.w[2]));
+    if (cracked && Math.abs(u - jag(v)) < .6 && d < -1) c = C.out;
+    b[y * w + x] = c;
+  }
+  c2.putImageData(im, 0, 0);
+}
+miniPill($('logoPill'), false);
+function drawBand(cv) {
+  const w = Math.max(60, Math.ceil(cv.clientWidth / 4)), h = 18;
+  cv.width = w; cv.height = h;
+  const c2 = cv.getContext('2d'), im = c2.createImageData(w, h), b = new Uint32Array(im.data.buffer);
+  const sp = makeCloud(w, h, +cv.dataset.band * 17 + 3, false);
+  b.set(sp.px.map((v) => v || 0));
+  c2.putImageData(im, 0, 0);
+}
+document.querySelectorAll('canvas.band').forEach(drawBand);
+
+/* ================= DATA ================= */
+async function api(path, params) {
+  const q = new URLSearchParams(params);
+  const r = await fetch(`api/${path}?${q}`, { headers: { accept: 'application/json' } });
+  const j = await r.json().catch(() => null);
+  if (!r.ok || !j) throw new Error(j?.error || 'HTTP ' + r.status);
+  return j;
+}
+const solscan = (s, kind = 'tx') => `https://solscan.io/${kind}/${s}`;
+
+function emptyBox(title, desc) {
+  return `<div class="empty"><canvas width="24" height="24" data-pill aria-hidden="true"></canvas><p><span class="t" style="display:block">${esc(title)}</span><span class="d">${esc(desc)}</span></p></div>`;
+}
+function paintPills(root) { root.querySelectorAll('canvas[data-pill]').forEach((cv) => miniPill(cv, true)); }
+const skel = (n) => `<div class="board">${'<div class="skrow"></div>'.repeat(n)}</div>`;
+
+/* --- next drop stats + board --- */
+const shimV = '<span class="shim" style="height:36px;width:6ch"></span>';
+function initNext() {
+  if (!ENGINE) { $('stPending').textContent = '—'; $('stPendingS').textContent = 'reads the creator vault once the coin is live'; }
+  else { $('stPending').innerHTML = shimV; }
+  if (!CA) { $('stElig').textContent = '—'; $('stEligS').textContent = 'wallets holding 100,000+ $VESTED'; }
+  else { $('stElig').innerHTML = shimV; }
+  const bb = $('boardBox');
+  if (!CA) { bb.innerHTML = emptyBox('The board fills the minute $VESTED is live', 'Top 200 wallets by weight, refreshed every minute, with each wallet\'s multiplier and its cut of the last drop.'); paintPills(bb); }
+  else bb.innerHTML = skel(8);
+}
+async function loadPending() {
+  if (!ENGINE) return;
+  try {
+    const p = await api('pending', { engine: ENGINE });
+    $('stPending').innerHTML = `${fmtSol(p.totalLamports / LAMPORTS)}<small>SOL</small>`;
+    $('stPendingS').textContent = p.ammLamports > 0 ? `curve ${fmtSol(p.curveLamports / LAMPORTS)} + PumpSwap ${fmtSol(p.ammLamports / LAMPORTS)}` : 'in the creator vault, claimed at :00';
+    window.__pending = p.totalLamports;
+  } catch { $('stPending').textContent = '—'; $('stPendingS').textContent = 'vault read failed, retrying'; }
+}
+async function loadBoard() {
+  if (!CA) return;
+  const bb = $('boardBox');
+  try {
+    const h = await api('holders', { mint: CA, ...(ENGINE ? { engine: ENGINE } : {}) });
+    $('stElig').textContent = h.eligibleCount.toLocaleString('en-US');
+    $('stEligS').textContent = `top ${Math.min(200, h.eligibleCount)} get paid this hour`;
+    if (!h.board.length) { bb.innerHTML = emptyBox('No wallet holds 100,000 $VESTED yet', 'The first wallet over the line shows up here within a minute.'); paintPills(bb); return; }
+    const tw = h.totalWeight || 1;
+    const rows = h.board.slice(0, 25).map((r, i) => `<div class="brow">
+      <span class="r">${i + 1}</span>
+      <a href="${solscan(r.owner, 'account')}" target="_blank" rel="noopener">${short(r.owner)}</a>
+      <span class="num">${fmtTok(r.balance)}</span>
+      <span class="num">${r.mult == null ? '—' : '×' + r.mult.toFixed(2)}</span>
+      <span class="num hide-s">${fmtPct(r.weight / tw)}</span>
+      <span class="num hide-s">${r.lastPaid ? fmtSol(r.lastPaid / LAMPORTS) : '—'}</span></div>`).join('');
+    bb.innerHTML = `<div class="board" role="table" aria-label="Top wallets by weight">
+      <div class="brow hd"><span>#</span><span>Wallet</span><span class="num">Holds</span><span class="num">Mult.</span><span class="num hide-s">Share</span><span class="num hide-s">Last drop, SOL</span></div>
+      ${rows}
+      <div class="bfoot">${h.multsKnown ? `Multipliers read back from the last drop's payouts (hour ${h.multsFromHour}); the engine recomputes them from 30-day fee history at :00.` : 'Multipliers show here after the first drop. Until then every wallet is ranked at 1×.'}</div></div>`;
+  } catch { if (!bb.querySelector('.brow')) bb.innerHTML = emptyBox('Board read failed', 'Holder data didn\'t load. It retries every minute.'), paintPills(bb); }
+}
+
+/* --- drops --- */
+let knownHour = null;
+function initDrops() {
+  const b = $('dropsBox');
+  if (!ENGINE) { b.innerHTML = emptyBox('Drops start the first hour after launch', 'Each hour lands here: time, SOL paid, wallets paid and the Solscan link for every payout tx.'); paintPills(b); }
+  else b.innerHTML = skel(5);
+}
+function hourLabel(h) { const d = new Date(h * 3600000); return d.toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }) + ' · ' + String(d.getUTCHours()).padStart(2, '0') + ':00 UTC'; }
+async function loadDrops() {
+  if (!ENGINE) return;
+  const b = $('dropsBox');
+  try {
+    const d = await api('drops', { engine: ENGINE });
+    if (!d.drops.length) { b.innerHTML = emptyBox('Drops start the first hour after launch', 'The first payout lands at the top of the hour after fees start flowing.'); paintPills(b); knownHour = 0; return; }
+    const newest = d.drops[0].hour;
+    if (knownHour !== null && newest > knownHour) { crackNow(); toast(`Drop landed: ${fmtSol(d.drops[0].paid / LAMPORTS)} SOL to ${d.drops[0].recipients} wallets`, 5000); }
+    knownHour = newest;
+    b.innerHTML = `<div class="board drows" role="table" aria-label="Payout history">
+      <div class="brow hd"><span>Hour</span><span class="num">Paid, SOL</span><span class="num">Wallets</span><span class="hide-s">Transactions</span></div>
+      ${d.drops.slice(0, 24).map((x) => `<div class="brow"><a href="${solscan(x.txs[0])}" target="_blank" rel="noopener">${hourLabel(x.hour)}</a>
+        <span class="num">${fmtSol(x.paid / LAMPORTS)}</span><span class="num">${x.recipients}</span>
+        <span class="hide-s">${x.txs.slice(0, 4).map((s, i) => `<a style="display:inline-flex;padding-right:10px" href="${solscan(s)}" target="_blank" rel="noopener">tx${i + 1}</a>`).join('')}${x.txs.length > 4 ? `+${x.txs.length - 4}` : ''}</span></div>`).join('')}
+      <div class="bfoot">${d.count} drops, ${fmtSol(d.totalPaid / LAMPORTS)} SOL paid in total.</div></div>`;
+  } catch { if (!b.querySelector('.brow')) { b.innerHTML = emptyBox('Payout history didn\'t load', 'It retries every minute.'); paintPills(b); } }
+}
+
+/* --- tally receipt --- */
+const rc = $('receipt');
+function bars(seed) { const r = rng(seed); let s = ''; for (let i = 0; i < 44; i++) s += `<i class="${r() < .35 ? 'w' : ''}" style="opacity:${r() < .15 ? 0 : 1}"></i>`; return `<div class="bars" aria-hidden="true">${s}</div>`; }
+function line(k, v, big) { return `<div class="ln${big ? ' big' : ''}"><span>${k}</span><span class="dots"></span><b>${v}</b></div>`; }
+function receiptShell(lines, wallet, extra = '') {
+  return `<h3>VESTED</h3><div class="rsub">airdrop receipt · ${wallet ? esc(short(wallet)) : 'no wallet yet'}</div><hr class="rule">${lines}<hr class="rule">${extra}`;
+}
+function receiptEmpty() {
+  const B = '<span class="blank"></span>';
+  rc.innerHTML = receiptShell(line('pump.fun volume, 30d', B) + line('Fees paid (est.)', B) + line('Multiplier', B, true) + line('$VESTED held', B) + line('Est. share of next drop', B), null,
+    `<div class="fine">Paste a wallet to print its receipt.</div>`);
+  $('postIt').hidden = true;
+}
+function receiptLoading(w) {
+  const S = '<span class="shim"></span>';
+  rc.innerHTML = receiptShell(line('pump.fun volume, 30d', S) + line('Fees paid (est.)', S) + line('Multiplier', S, true) + line('$VESTED held', S) + line('Est. share of next drop', S), w, `<div class="fine">Reading 30 days of trades…</div>`);
+}
+function receiptFull(d) {
+  const held = d.balance == null ? 'at launch' : fmtTok(d.balance);
+  let share;
+  if (d.balance == null) share = 'at launch';
+  else if (!d.eligible) share = 'hold 100K';
+  else if (d.share == null || d.share === 0) share = d.rank ? `rank ${d.rank}, outside top 200` : '—';
+  else share = fmtPct(d.share) + (d.estSol != null ? ` ≈ ${fmtSol(d.estSol)} SOL` : '');
+  const lines = line('pump.fun volume, 30d', fmtSol(d.volume30d, 2) + ' SOL') + line('Fees paid (est.)', fmtSol(d.feesEst, 3) + ' SOL') +
+    line('Multiplier', '×' + d.mult.toFixed(2), true) + line('$VESTED held', held) + line('Est. share of next drop', share);
+  const notes = [`Estimated at a 1% fee on your pump.fun volume across ${d.pumpTxs} pump.fun/PumpSwap txs.`];
+  if (!d.complete) notes.push(`Counted your latest ${d.scannedTxs} txs; heavy wallets may be higher.`);
+  if (d.balance != null && !d.eligible) notes.push('Hold 100,000 $VESTED at the :00 snapshot to qualify.');
+  rc.innerHTML = receiptShell(lines, d.wallet, `<div class="fine">${notes.map(esc).join(' ')}</div>${bars(parseInt(d.wallet.slice(-6), 36) || 7)}`) + `<div class="stamp" aria-hidden="true">×${d.mult.toFixed(1)}</div>`;
+  rc.classList.remove('printing'); void rc.offsetWidth; if (!RM) rc.classList.add('printing');
+  const site = /^https?:/.test(location.origin) ? location.origin : '';
+  const txt = `pump.fun never sent my airdrop.\n\nlast 30 days I paid it ~${fmtSol(d.feesEst, 2)} SOL in fees on ${fmtSol(d.volume30d, 1)} SOL volume.\n\nthat's ×${d.mult.toFixed(2)} on $VESTED, the airdrop pump.fun never sent. hourly SOL drops.${CFG.X ? '\n' + CFG.X : ''}${site ? '\n\ncheck yours: ' + site : ''}`;
+  const pi = $('postIt'); pi.href = 'https://x.com/intent/tweet?text=' + encodeURIComponent(txt); pi.hidden = false;
+}
+receiptEmpty();
+$('tallyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const w = $('walletIn').value.trim(), er = $('tallyErr');
+  er.hidden = true;
+  if (!isAddr(w)) { er.textContent = 'That isn\'t a Solana address. Paste the full wallet, 32 to 44 characters.'; er.hidden = false; return; }
+  $('tallyGo').disabled = true; receiptLoading(w); $('postIt').hidden = true;
+  try {
+    const d = await api('tally', { wallet: w, ...(CA ? { mint: CA } : {}), ...(ENGINE ? { engine: ENGINE } : {}) });
+    receiptFull(d);
+  } catch (err) {
+    receiptEmpty();
+    er.textContent = 'Couldn\'t read that wallet right now. Try again in a minute.'; er.hidden = false;
+  } finally { $('tallyGo').disabled = false; }
+});
+
+initNext(); initDrops();
+loadPending(); loadBoard(); loadDrops();
+if (ENGINE) setInterval(loadPending, 30000);
+if (CA) setInterval(loadBoard, 60000);
+if (ENGINE) setInterval(loadDrops, 60000);
+// right after :00, poll drops a bit faster to catch the payout and crack the pill
+setInterval(() => { const m = new Date().getUTCMinutes(); if (ENGINE && m < 4) loadDrops(); }, 20000);
+})();
+</script>
+</body>
+</html>

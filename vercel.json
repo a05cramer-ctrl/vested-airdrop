@@ -1,0 +1,3 @@
+{
+  "functions": { "api/tally.js": { "maxDuration": 30 }, "api/holders.js": { "maxDuration": 30 }, "api/drops.js": { "maxDuration": 20 } }
+}
